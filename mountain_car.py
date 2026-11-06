@@ -11,15 +11,20 @@ and then displays the trained car.
 import numpy as np
 import gymnasium as gym
 
+from environment import (
+    ACTION_COUNT,
+    ENV_NAME,
+    MAX_STEPS,
+    POSITION_BINS,
+    VELOCITY_BINS,
+    create_q_table,
+    get_state,
+    make_bins,
+)
+
 
 # -------------------- SETTINGS --------------------
-ENV_NAME = "MountainCar-v0"
 EPISODES = 20_000
-MAX_STEPS = 200
-
-# Divide the continuous position and velocity into smaller groups.
-POSITION_BINS = 40
-VELOCITY_BINS = 40
 
 LEARNING_RATE = 0.1
 DISCOUNT_FACTOR = 0.99
@@ -28,28 +33,6 @@ EPSILON_MIN = 0.01
 EPSILON_DECAY = 0.9995
 
 Q_TABLE_FILE = "q_table.npy"
-
-
-def make_bins():
-    """Create the boundaries used to convert observations into table indexes."""
-    position_low, position_high = -1.2, 0.6
-    velocity_low, velocity_high = -0.07, 0.07
-
-    position_bins = np.linspace(
-        position_low, position_high, POSITION_BINS - 1
-    )
-    velocity_bins = np.linspace(
-        velocity_low, velocity_high, VELOCITY_BINS - 1
-    )
-    return position_bins, velocity_bins
-
-
-def get_state(observation, bins):
-    """Convert car position and velocity into discrete Q-table indexes."""
-    position, velocity = observation
-    position_index = np.digitize(position, bins[0])
-    velocity_index = np.digitize(velocity, bins[1])
-    return position_index, velocity_index
 
 
 def choose_action(q_table, state, epsilon, action_space):
@@ -64,10 +47,13 @@ def train_agent():
     env = gym.make(ENV_NAME)
     bins = make_bins()
 
-    q_table = np.zeros(
-        (POSITION_BINS, VELOCITY_BINS, env.action_space.n),
-        dtype=np.float32,
-    )
+    if env.action_space.n != ACTION_COUNT:
+        raise RuntimeError(
+            f"{ENV_NAME} exposes {env.action_space.n} actions; "
+            f"expected {ACTION_COUNT}."
+        )
+
+    q_table = create_q_table()
 
     epsilon = EPSILON_START
     rewards = []
