@@ -2,10 +2,11 @@
 
 A beginner-friendly Python project that teaches a simulated car to climb a hill using **Reinforcement Learning (Q-learning)**.
 
-## Person 1: Environment design
+## Person 1: AI algorithm and implementation
 
-Person 1 is responsible for the environment model used by the learning agent.
-The environment is `MountainCar-v0` from Gymnasium:
+Person 1 is responsible for the reinforcement-learning agent: Q-learning,
+epsilon-greedy exploration, training, Q-value updates, testing, and performance
+analysis. The agent learns in `MountainCar-v0` from Gymnasium:
 
 - **State:** `(position, velocity)`. Position is in `[-1.2, 0.6]` and velocity
   is in `[-0.07, 0.07]`.
@@ -19,11 +20,11 @@ The environment is `MountainCar-v0` from Gymnasium:
   bins each. The resulting Q-table has shape `(40, 40, 3)`, representing
   4,800 state-action values.
 
-The reusable environment definitions are in `environment.py`. The
-`make_bins`, `get_state`, and `create_q_table` functions define how continuous
-observations become Q-table indexes. The learning algorithm in
-`mountain_car.py` uses those definitions without changing the environment
-rules.
+The reusable environment definitions are in `environment.py`. Its
+`make_bins`, `get_state`, and `create_q_table` functions map continuous
+observations to Q-table indexes. `mountain_car.py` trains the agent, evaluates
+the greedy policy without exploration, saves the Q-table and training graphs,
+and can show rendered test episodes.
 
 ## 1. What you need
 
