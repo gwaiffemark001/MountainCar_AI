@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import time
+
 import gymnasium as gym
 import matplotlib.pyplot as plt
 import numpy as np
@@ -86,12 +88,21 @@ def evaluate_agent(
 
 
 def train_agent(
+    episodes: int = EPISODES,
+    seed: int = SEED,
+    q_table_file: str = Q_TABLE_FILE,
+    evaluation_interval: int = EVALUATION_INTERVAL,
 ) -> tuple[np.ndarray, tuple[np.ndarray, np.ndarray], dict[str, list[float]]]:
     """Train with Q-learning and record per-episode and evaluation metrics."""
+    if episodes <= 0:
+        raise ValueError("episodes must be greater than zero")
+    if evaluation_interval <= 0:
+        raise ValueError("evaluation_interval must be greater than zero")
+
     env = gym.make(ENV_NAME)
     bins = make_bins()
     q_table = create_q_table()
-    rng = np.random.default_rng(SEED)
+    rng = np.random.default_rng(seed)
 
     if env.action_space.n != ACTION_COUNT:
         env.close()
@@ -113,9 +124,9 @@ def train_agent(
     try:
         print("Training started.")
 
-        for episode in range(1, EPISODES + 1):
+        for episode in range(1, episodes + 1):
             if episode == 1:
-                observation, _ = env.reset(seed=SEED)
+                observation, _ = env.reset(seed=seed)
             else:
                 observation, _ = env.reset()
 
@@ -152,20 +163,20 @@ def train_agent(
             history["success"].append(float(reached_goal))
             epsilon = max(EPSILON_MIN, epsilon * EPSILON_DECAY)
 
-            if episode % EVALUATION_INTERVAL == 0:
+            if episode % evaluation_interval == 0:
                 mean_eval_return, eval_success_rate = evaluate_agent(
                     q_table,
                     bins,
-                    seed=SEED + episode,
+                    seed=seed + episode,
                 )
                 history["eval_episode"].append(float(episode))
                 history["eval_return"].append(mean_eval_return)
                 history["eval_success"].append(eval_success_rate)
 
-                recent_returns = history["return"][-EVALUATION_INTERVAL:]
-                recent_success = history["success"][-EVALUATION_INTERVAL:]
+                recent_returns = history["return"][-evaluation_interval:]
+                recent_success = history["success"][-evaluation_interval:]
                 print(
-                    f"Episode {episode:5d}/{EPISODES} | "
+                    f"Episode {episode:5d}/{episodes} | "
                     f"train return: {np.mean(recent_returns):.1f} | "
                     f"train goal rate: {np.mean(recent_success):.1%} | "
                     f"eval return: {mean_eval_return:.1f} | "
@@ -175,8 +186,8 @@ def train_agent(
     finally:
         env.close()
 
-    np.save(Q_TABLE_FILE, q_table)
-    print(f"Training complete. Q-table saved as {Q_TABLE_FILE}.")
+    np.save(q_table_file, q_table)
+    print(f"Training complete. Q-table saved as {q_table_file}.")
     return q_table, bins, history
 
 
@@ -238,10 +249,13 @@ def watch_agent(
     q_table: np.ndarray,
     bins: tuple[np.ndarray, np.ndarray],
     episodes: int = 3,
+    delay: float = 0.05,
 ) -> None:
     """Open a rendered window to watch the greedy policy."""
     if episodes <= 0:
         raise ValueError("episodes must be greater than zero")
+    if delay < 0:
+        raise ValueError("delay cannot be negative")
 
     env = gym.make(ENV_NAME, render_mode="human")
 
@@ -257,6 +271,7 @@ def watch_agent(
                 observation, reward, terminated, truncated, _ = env.step(action)
                 state = get_state(observation, bins)
                 total_reward += float(reward)
+                time.sleep(delay)
 
                 if terminated:
                     reached_goal = True
@@ -267,6 +282,7 @@ def watch_agent(
                 f"Test episode {episode}: reward={total_reward:.0f}, "
                 f"reached goal={reached_goal}"
             )
+            time.sleep(2)
     finally:
         env.close()
 

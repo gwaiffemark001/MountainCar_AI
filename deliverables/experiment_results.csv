@@ -1,0 +1,5 @@
+method,mean_return,success_rate
+tabular_q_learning,-200.0,0.0
+function_approximation,-156.87,0.83
+constrained_q_learning,-200.0,0.0
+model_based_monte_carlo,-200.0,0.0

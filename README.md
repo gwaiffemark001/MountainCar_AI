@@ -26,6 +26,58 @@ observations to Q-table indexes. `mountain_car.py` trains the agent, evaluates
 the greedy policy without exploration, saves the Q-table and training graphs,
 and can show rendered test episodes.
 
+## Assignment algorithms
+
+The first separate assignment component is `value_iteration.py`. It contains
+the Bellman value-update loop and a one-step policy lookup for a finite MDP.
+Value iteration is different from the Mountain Car trainer: it assumes that
+the possible transitions and rewards are already known.
+
+To check the module:
+
+```bash
+.venv/bin/python -m py_compile value_iteration.py
+```
+
+### MDP transformation
+
+`mdp_transformation.py` implements the discounted-to-undiscounted MDP
+reduction. The key idea is to add an absorbing `OUT` state and choose its
+transition probability and transformed rewards so the Bellman recurrence is
+unchanged.
+
+The reusable implementations for the learning methods are in
+`learning_algorithms.py`:
+
+- `ModelBasedMonteCarlo` estimates transitions and rewards, then applies value
+  iteration.
+- `TabularQLearning` learns one Q-value per state-action pair.
+- `fourier_feature_extractor` creates Fourier features for continuous states.
+- `FunctionApproxQLearning` learns weights over those features.
+- `ConstrainedQLearning` filters actions that would exceed a velocity limit.
+
+## Experiments and deliverables
+
+Run the complete comparison with:
+
+```bash
+.venv/bin/python experiments.py --episodes 1000 --seed 42
+.venv/bin/python create_deliverables.py
+```
+
+The generated `deliverables/` folder contains:
+
+- `MountainCar_AI_Report.ipynb` - notebook-style explanation and reproducibility guide.
+- `MountainCar_AI_Theory_and_Results.pdf` - theory, equations, configuration, and measured results.
+- `experiment_results.json` and `experiment_results.csv` - exact recorded metrics.
+- `experiment_comparison.png` - return and goal-rate comparison chart.
+
+The focused checks can be run with:
+
+```bash
+.venv/bin/python test_learning_algorithms.py
+```
+
 ## 1. What you need
 
 - Python 3.10 or newer

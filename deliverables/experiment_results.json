@@ -1,0 +1,24 @@
+{
+  "seed": 42,
+  "episodes": 1000,
+  "tabular_q_learning": {
+    "mean_return": -200.0,
+    "success_rate": 0.0
+  },
+  "function_approximation": {
+    "episodes": 1000.0,
+    "mean_return_last_100": -156.87,
+    "success_rate_last_100": 0.83
+  },
+  "constrained_q_learning": {
+    "episodes": 1000.0,
+    "mean_return_last_100": -200.0,
+    "success_rate_last_100": 0.0
+  },
+  "model_based_monte_carlo": {
+    "episodes": 300.0,
+    "mean_return_last_100": -200.0,
+    "success_rate_last_100": 0.0,
+    "model_states": 1605.0
+  }
+}
