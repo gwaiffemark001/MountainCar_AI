@@ -2,4 +2,3 @@
 __pycache__/
 *.pyc
 q_table.npy
-deliverables/tabular_q_table.npy

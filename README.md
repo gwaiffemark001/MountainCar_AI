@@ -56,22 +56,6 @@ The reusable implementations for the learning methods are in
 - `FunctionApproxQLearning` learns weights over those features.
 - `ConstrainedQLearning` filters actions that would exceed a velocity limit.
 
-## Experiments and deliverables
-
-Run the complete comparison with:
-
-```bash
-.venv/bin/python experiments.py --episodes 1000 --seed 42
-.venv/bin/python create_deliverables.py
-```
-
-The generated `deliverables/` folder contains:
-
-- `MountainCar_AI_Report.ipynb` - notebook-style explanation and reproducibility guide.
-- `MountainCar_AI_Theory_and_Results.pdf` - theory, equations, configuration, and measured results.
-- `experiment_results.json` and `experiment_results.csv` - exact recorded metrics.
-- `experiment_comparison.png` - return and goal-rate comparison chart.
-
 The focused checks can be run with:
 
 ```bash
