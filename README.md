@@ -62,6 +62,13 @@ The focused checks can be run with:
 .venv/bin/python test_learning_algorithms.py
 ```
 
+## Submission files
+
+- `Mountain_Car_Reinforcement_Learning.ipynb` - executed programming notebook with training, evaluation, plots, and a saved-table reload check.
+- `Mountain_Car_Theoretical_Report.pdf` - theoretical report covering the environment, discretization, Q-learning, training workflow, limitations, and references.
+
+The notebook currently uses a fixed seed (`42`) and 3,000 training episodes for a reproducible local run. Its measured evaluation output is retained in the notebook; results can vary when the seed or training duration changes.
+
 ## 1. What you need
 
 - Python 3.10 or newer
