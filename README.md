@@ -68,7 +68,6 @@ The focused checks can be run with:
 - `Mountain_Car_Theoretical_Report.pdf` - theoretical report covering the environment, discretization, Q-learning, training workflow, limitations, and references.
 
 The notebook currently uses a fixed seed (`42`) and 3,000 training episodes for a reproducible local run. Its measured evaluation output is retained in the notebook; results can vary when the seed or training duration changes.
-
 ## 1. What you need
 
 - Python 3.10 or newer

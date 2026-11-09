@@ -2,9 +2,18 @@
 
 from __future__ import annotations
 
+import os
+import platform
 import time
 
 import gymnasium as gym
+
+if os.environ.get("MPLBACKEND") is None and not os.environ.get("DISPLAY"):
+    if platform.system() not in {"Windows", "Darwin"}:
+        import matplotlib
+
+        matplotlib.use("Agg")
+
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -287,6 +296,18 @@ def watch_agent(
         env.close()
 
 
+def should_show_render() -> bool:
+    """Return whether the interactive render window should be shown."""
+    if os.environ.get("SHOW_RENDER", "1") == "0":
+        return False
+    return (
+        platform.system() in {"Windows", "Darwin"}
+        or os.environ.get("DISPLAY") is not None
+    )
+
+
 if __name__ == "__main__":
     trained_q_table, state_bins, training_history = train_agent()
     plot_training_results(training_history)
+    if should_show_render():
+        watch_agent(trained_q_table, state_bins)
