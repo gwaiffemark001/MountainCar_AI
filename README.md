@@ -1,162 +1,62 @@
-# MountainCar_AI
+# Mountaincar
 
-A beginner-friendly Python project that teaches a simulated car to climb a hill using **Reinforcement Learning (Q-learning)**.
+The following sections detail some general notes for working with `mountaincar`, including setup, and
+various dependency requirements.
 
-## Person 1: AI algorithm and implementation
+## Prerequisites
 
-Person 1 is responsible for the reinforcement-learning agent: Q-learning,
-epsilon-greedy exploration, training, Q-value updates, testing, and performance
-analysis. The agent learns in `MountainCar-v0` from Gymnasium:
-
-- **State:** `(position, velocity)`. Position is in `[-1.2, 0.6]` and velocity
-  is in `[-0.07, 0.07]`.
-- **Actions:** `0` pushes left, `1` does nothing, and `2` pushes right.
-- **Goal:** reach the flag at position `0.5` or higher.
-- **Reward:** `-1` for every environment step, which encourages the agent to
-  reach the goal in as few steps as possible.
-- **Episode limit:** an episode ends when the goal is reached or after 200
-  steps.
-- **Discretization:** the continuous position and velocity are divided into 40
-  bins each. The resulting Q-table has shape `(40, 40, 3)`, representing
-  4,800 state-action values.
-
-The reusable environment definitions are in `environment.py`. Its
-`make_bins`, `get_state`, and `create_q_table` functions map continuous
-observations to Q-table indexes. `mountain_car.py` trains the agent, evaluates
-the greedy policy without exploration, saves the Q-table and training graphs,
-and can show rendered test episodes.
-
-## Assignment algorithms
-
-The first separate assignment component is `value_iteration.py`. It contains
-the Bellman value-update loop and a one-step policy lookup for a finite MDP.
-Value iteration is different from the Mountain Car trainer: it assumes that
-the possible transitions and rewards are already known.
-
-To check the module:
+Install the following dependencies (in a virtual environment, such as
+ [miniconda](https://docs.conda.io/en/latest/miniconda.html#linux-installers)) for working with OpenAI gym.
 
 ```bash
-.venv/bin/python -m py_compile value_iteration.py
+pip3 install -r requirements.txt
 ```
 
-### MDP transformation
+This command should work out of the box for all platforms (Linux, Mac OS, Windows).
 
-`mdp_transformation.py` implements the discounted-to-undiscounted MDP
-reduction. The key idea is to add an absorbing `OUT` state and choose its
-transition probability and transformed rewards so the Bellman recurrence is
-unchanged.
+If you are getting "module not found" errors after downloading all the requirements, try using `pip` instead of `pip3` and `python` instead of `python3`.
 
-The reusable implementations for the learning methods are in
-`learning_algorithms.py`:
+### Training agent with your RL Implementation
 
-- `ModelBasedMonteCarlo` estimates transitions and rewards, then applies value
-  iteration.
-- `TabularQLearning` learns one Q-value per state-action pair.
-- `fourier_feature_extractor` creates Fourier features for continuous states.
-- `FunctionApproxQLearning` learns weights over those features.
-- `ConstrainedQLearning` filters actions that would exceed a velocity limit.
-
-The focused checks can be run with:
+To train the mountaincar agent with your RL implmentations,
 
 ```bash
-.venv/bin/python test_learning_algorithms.py
+# MCValueIteration
+python3 train.py --agent value-iteration
+
+# Tabular Q-Learning
+python3 train.py --agent tabular
+
+# Function Approximation Q-Learning
+python3 train.py --agent function-approximation
+
+# Constrained Q-Learning
+python3 train.py --agent constrained
 ```
 
-## Submission files
+This will save the resulting policy, Q values, or weights in your assignment directory.
 
-- `Mountain_Car_Reinforcement_Learning.ipynb` - executed programming notebook with training, evaluation, plots, and a saved-table reload check.
-- `Mountain_Car_Theoretical_Report.pdf` - theoretical report covering the environment, discretization, Q-learning, training workflow, limitations, and references.
+## Visualizing the Trained Agent
 
-The notebook currently uses a fixed seed (`42`) and 3,000 training episodes for a reproducible local run. Its measured evaluation output is retained in the notebook; results can vary when the seed or training duration changes.
-## 1. What you need
-
-- Python 3.10 or newer
-- Visual Studio Code
-- An internet connection for installing the libraries
-
-## 2. Open the project
-
-1. Extract `MountainCar_AI.zip`.
-2. Open VS Code.
-3. Select **File > Open Folder**.
-4. Choose the extracted `MountainCar_AI` folder.
-
-## 3. Open the VS Code terminal
-
-Select **Terminal > New Terminal**.
-
-Check Python:
+To visualize the agent trained with your RL implementations,
 
 ```bash
-python --version
+# Agent trained with MCValueIteration
+python3 mountaincar.py --agent value-iteration
+
+# Agent trained with Tabular Q-Learning
+python3 mountaincar.py --agent tabular
+
+# Agent trained with Function Approximation Q-Learning
+python3 mountaincar.py --agent function-approximation
+
+# Agent trained with Constrained Q-Learning
+python3 mountaincar.py --agent constrained
 ```
 
-If that command does not work on Windows, try:
+## Written submission and generated plots
 
-```bash
-py --version
-```
-
-## 4. Create a virtual environment (recommended)
-
-On Windows:
-
-```bash
-python -m venv .venv
-```
-
-Activate it:
-
-```bash
-.venv\Scripts\activate
-```
-
-If you use PowerShell and activation is blocked, you can use Command Prompt in VS Code, or ask for help before changing execution-policy settings.
-
-## 5. Install the required libraries
-
-```bash
-python -m pip install -r requirements.txt
-```
-
-If `python` is not recognized, use `py` instead:
-
-```bash
-py -m pip install -r requirements.txt
-```
-
-## 6. Run the project
-
-```bash
-python mountain_car.py
-```
-
-The program trains the Q-learning agent. Training can take a few minutes. It prints progress every 1,000 episodes, saves the learned table as `q_table.npy`, and then opens a window showing the trained car.
-
-## 7. Understand the project
-
-- **Agent:** the computer program learning to control the car.
-- **Environment:** the Mountain Car game.
-- **State:** the car's position and velocity.
-- **Actions:** push left, do nothing, or push right.
-- **Reward:** the feedback received after an action. MountainCar gives a penalty on each step, encouraging the agent to reach the flag sooner.
-- **Q-table:** stores the agent's learned estimates of how useful each action is in each discretized state.
-- **Exploration:** trying actions to learn.
-- **Exploitation:** choosing the action currently believed to be best.
-
-## 8. Important files
-
-- `mountain_car.py` — the complete training and testing program.
-- `requirements.txt` — Python libraries needed by the project.
-- `q_table.npy` — created automatically after training; contains the learned Q-values.
-
-## Troubleshooting
-
-- **`python` is not recognized:** try `py` in place of `python`.
-- **`No module named gymnasium`:** activate `.venv`, then run `python -m pip install -r requirements.txt`.
-- **The simulation window does not open:** make sure you are running the program on your computer with a desktop display, not in a headless terminal.
-- **Training is taking time:** this is normal; the starter setting is 20,000 episodes.
-
-## Learning note
-
-This project is a starting implementation. Q-learning results can vary with settings and random exploration. If the car does not reliably reach the flag, we can tune the number of episodes, state bins, and learning parameters together.
+The completed written responses for Problems 1–5 are in
+[`hw4_written_answers.md`](./hw4_written_answers.md). Training plots for the
+three required agents are included as `mcvi_1.png`–`mcvi_3.png`,
+`tabular_1.png`–`tabular_3.png`, and `fapprox_1.png`–`fapprox_3.png`.

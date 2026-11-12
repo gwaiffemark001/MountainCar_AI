@@ -2,3 +2,5 @@
 __pycache__/
 *.pyc
 q_table.npy
+*_weights.npy
+mcvi_weights.json
