@@ -54,15 +54,9 @@ python3 mountaincar.py --agent function-approximation
 python3 mountaincar.py --agent constrained
 ```
 
-## Course submission
+## Assignment deliverables
 
-This is a Year 2 Bachelor of Science in Computer Science submission for the
-Artificial Intelligence course unit at Makerere University.
-
-- [`Mountain_Car_CS221_HW4_Report.pdf`](./Mountain_Car_CS221_HW4_Report.pdf) —
-  completed written report for Problems 1–5.
-- [`Mountain_Car_CS221_HW4.ipynb`](./Mountain_Car_CS221_HW4.ipynb) —
-  executable notebook companion with equations, implementation notes,
-  validation, and plots.
-- `mcvi_1.png`–`mcvi_3.png`, `tabular_1.png`–`tabular_3.png`, and
-  `fapprox_1.png`–`fapprox_3.png` — required training plots.
+- [`Mountain_Car_Report.pdf`](./Mountain_Car_Report.pdf) — written responses
+  and training plots.
+- [`Mountain_Car_Notebook.ipynb`](./Mountain_Car_Notebook.ipynb) — executable
+  solutions, demonstrations, and embedded training plots.
