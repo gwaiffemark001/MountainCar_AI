@@ -54,9 +54,12 @@ python3 mountaincar.py --agent function-approximation
 python3 mountaincar.py --agent constrained
 ```
 
-## Written submission and generated plots
+## Final submission
 
-The completed written responses for Problems 1–5 are in
-[`hw4_written_answers.md`](./hw4_written_answers.md). Training plots for the
-three required agents are included as `mcvi_1.png`–`mcvi_3.png`,
-`tabular_1.png`–`tabular_3.png`, and `fapprox_1.png`–`fapprox_3.png`.
+- [`Mountain_Car_CS221_HW4_Report.pdf`](./Mountain_Car_CS221_HW4_Report.pdf) —
+  completed written report for Problems 1–5.
+- [`Mountain_Car_CS221_HW4.ipynb`](./Mountain_Car_CS221_HW4.ipynb) —
+  executable notebook companion with equations, implementation notes,
+  validation, and plots.
+- `mcvi_1.png`–`mcvi_3.png`, `tabular_1.png`–`tabular_3.png`, and
+  `fapprox_1.png`–`fapprox_3.png` — required training plots.
