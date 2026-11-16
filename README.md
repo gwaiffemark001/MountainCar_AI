@@ -54,7 +54,10 @@ python3 mountaincar.py --agent function-approximation
 python3 mountaincar.py --agent constrained
 ```
 
-## Final submission
+## Course submission
+
+This is a Year 2 Bachelor of Science in Computer Science submission for the
+Artificial Intelligence course unit at Makerere University.
 
 - [`Mountain_Car_CS221_HW4_Report.pdf`](./Mountain_Car_CS221_HW4_Report.pdf) —
   completed written report for Problems 1–5.
